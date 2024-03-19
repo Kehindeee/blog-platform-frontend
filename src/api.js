@@ -81,7 +81,16 @@ export const addComment = async (postId, commentData) => {
   }
 };
 
+export const getPosts = async () => {
+  // Implement the logic to fetch posts from your API server
 
+  const response = await fetch('http://localhost:8080/api/posts');
+  if (!response.ok) {
+    throw new Error('Failed to fetch posts');
+  }
+  const postsData = await response.json();
+  return postsData;
+};
 export const login = async (email, password) => {
     try {
       const response = await fetch('http://localhost:8080/api/login', {

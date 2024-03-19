@@ -1,6 +1,5 @@
-// src/components/Login.jsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; // Import Link
 import { login } from '../api'; // Adjust the path as needed
 
 const Login = () => {
@@ -63,6 +62,12 @@ const Login = () => {
 
           <div className="flex items-center justify-between">
             {/* Add additional elements like 'Forgot your password?' if needed */}
+            <p className="text-sm">
+              If you don't have an account,{' '}
+              <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500">
+                click here to Register
+              </Link>
+            </p>
           </div>
 
           {error && <div className="text-sm text-red-600">{error}</div>}
