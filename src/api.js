@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 const API_URL = 'http://localhost:8080/api'; // Adjust this to your backend's base URL
@@ -92,20 +91,16 @@ export const getPosts = async () => {
   return postsData;
 };
 export const login = async (email, password) => {
-    try {
-      const response = await fetch('http://localhost:8080/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+  try {
+      const response = await axios.post(`${API_URL}/login`, {
+          email,
+          password
       });
-  
-      if (!response.ok) throw new Error('Login failed');
-  
-      const data = await response.json();
-      return data; // Return response data (e.g., user info, token)
-    } catch (error) {
-      console.error('Login error:', error);
+      // Assuming your backend sends back a token or user data
+      return response.data; // This will contain the token or user data
+  } catch (error) {
+      console.error('Login error:', error.response ? error.response.data : error);
       throw error;
-    }
-  };
+  }
+};
   
