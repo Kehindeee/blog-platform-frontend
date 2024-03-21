@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api'; // Adjust this to your backend's base URL
+const API_URL = 'http://localhost:8080/api'; 
 
 // Fetch all posts
 export const fetchAllPosts = async () => {
