@@ -1,6 +1,6 @@
 // src/components/CreatePost.jsx
 import React, { useState } from 'react';
-import { createPost } from '../api'; // Adjust the import path as necessary
+import { createPost } from '../api';
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');

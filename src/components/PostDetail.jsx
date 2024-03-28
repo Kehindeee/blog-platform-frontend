@@ -1,46 +1,43 @@
-// src/components/PostDetail.jsx
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom'; 
-import { fetchPostById, fetchComments, addComment } from '../api';
-import Comments from './Comments';
-import AddComment from './AddComment';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const PostDetail = () => {
-  const { postId } = useParams(); // Retrieve postId from URL
   const [post, setPost] = useState(null);
-  const [comments, setComments] = useState([]);
+  const { postId } = useParams();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const fetchedPost = await fetchPostById(postId);
-      setPost(fetchedPost);
-      const fetchedComments = await fetchComments(postId);
-      setComments(fetchedComments);
-    };
-
-    fetchData();
+    if (postId) {
+      fetchPostById(postId);
+    } else {
+      console.error("Post ID is undefined");
+    }
   }, [postId]);
 
-  const handleAddComment = async (commentData) => {
-    await addComment(postId, { comment: commentData });
-    // Reload comments
-    const fetchedComments = await fetchComments(postId);
-    setComments(fetchedComments);
+  const fetchPostById = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/posts/${id}`);
+      setPost(response.data);
+    } catch (error) {
+      console.error(`Error fetching post with ID ${id}:`, error);
+    }
   };
 
   if (!post) {
-    return <div>Loading...</div>;
+    return <div className="text-center text-xl mt-5">Loading...</div>;
   }
 
   return (
-    <div className="container mx-auto px-4">
-      <h1 className="text-3xl font-bold my-8">{post.title}</h1>
-      <p>{post.content}</p>
-      <div className="my-8">
-        <h2 className="text-2xl font-bold">Comments</h2>
-        <Comments comments={comments} />
-        <AddComment onAddComment={handleAddComment} />
-      </div>
+    <div className="container mx-auto mt-10 p-5">
+      <article className="max-w-xl mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+        <div className="md:flex">
+          <div className="p-8">
+            <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">{post.title}</div>
+            <p className="block mt-1 text-lg leading-tight font-medium text-black hover:none">{post.content}</p>
+            <p className="mt-2 text-gray-500">{post.created_at}</p>
+          </div>
+        </div>
+      </article>
     </div>
   );
 };

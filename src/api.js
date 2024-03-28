@@ -30,19 +30,25 @@ export const searchPosts = async (query) => {
     const response = await axios.get(`${API_URL}/posts/search`, { params: { query } });
     return response.data;
   } catch (error) {
-    console.error('Error searching posts:', error);
-    throw error;
+    // Check if error response is available and has a data object
+    const errorMessage = error.response && error.response.data && error.response.data.message 
+                         ? error.response.data.message 
+                         : 'An unexpected error occurred while searching posts.';
+    console.error('Error searching posts:', errorMessage);
+    throw new Error(errorMessage); // This will pass the error message up to the caller
   }
 };
 
 // Fetch a single post by ID
-export const fetchPostById = async (id) => {
+export const fetchPostById = async (postId) => {
+  if (!postId) {
+    throw new Error('Post ID is undefined');
+  }
   try {
-    const response = await axios.get(`${API_URL}/posts/${id}`);
+    const response = await axios.get(`${API_URL}/posts/${postId}`);
     return response.data;
   } catch (error) {
-    console.error(`Error fetching post with ID ${id}:`, error);
-    throw error;
+    throw new Error(error.response.data.message || 'Failed to fetch post');
   }
 };
 
@@ -104,3 +110,13 @@ export const login = async (email, password) => {
   }
 };
   
+export const registerUser = async (userData) => {
+  try {
+    const response = await axios.post(`${API_URL}/register`, userData);
+    return response.data; // The response from the server
+  } catch (error) {
+    // Handle the error accordingly
+    // This will pass the error message up to the component
+    throw new Error(error.response.data.message || 'Failed to register');
+  }
+};

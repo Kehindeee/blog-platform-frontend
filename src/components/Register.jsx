@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { registerUser } from '../api';
 
-// You would also have a function in your API utility file to handle registration
-// import { registerUser } from '../api'; // Adjust the import path as needed
+
 const Register = () => {
   const [userData, setUserData] = useState({
     name: '',
@@ -16,23 +16,25 @@ const Register = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // Check if passwords match
     if (userData.password !== userData.confirmPassword) {
       toast.error("Passwords don't match");
       return;
     }
-    try {
-      // API call to register the user
-      // await registerUser(userData);
-
-      // If registration is successful, show a toast and redirect
-      toast.success('Registration successful!');
-      navigate('/login');
-    } catch (error) {
-      // If there's an error, show a toast message
-      toast.error('Registration failed. Please try again.');
-    }
-  };
+  
+     // Prepare the data to send to the backend
+     const { name, email, password } = userData;
+     try {
+       // This awaits the response from the registerUser function
+       // and will hold off proceeding until it's resolved or rejected
+       await registerUser({ name, email, password });
+       // If no error is thrown, the following code will execute
+       toast.success('Registration successful!');
+       navigate('/login');
+     } catch (error) {
+       // If there's an error, it will jump to this catch block
+       toast.error(error.message || 'Registration failed. Please try again.');
+     }
+   };
 
   return (
     <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
