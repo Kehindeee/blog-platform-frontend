@@ -2,12 +2,14 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home'
 import Login from './components/Login';
+import Profile from './components/Profile';
 import Register from './components/Register';
 import CreatePost from './components/CreatePost'
 import PostList from './components/PostList';
 import PostDetail from './components/PostDetail';
 import Admin from './components/AdminPage';
 import NavBar from './components/NavBar';
+import ProtectedRoute from './components/ProtectedRoute';
 // Import other components
 
 function App() {
@@ -18,6 +20,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/admin" element={<Admin />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/register" element={<Register />} />
         <Route path="/createpost" element={<CreatePost />}/>
         <Route path="/posts" element={<PostList />} />

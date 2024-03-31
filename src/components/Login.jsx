@@ -1,32 +1,42 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; // Import Link
-import { login } from '../api'; // Adjust the path as needed
+import { useNavigate, Link } from 'react-router-dom';
+import { login } from '../api';
+import { useAuth } from '../context/AuthContext';
+import { EyeIcon, EyeSlashIcon  } from '@heroicons/react/24/outline'; // Import both icons
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // For toggling password visibility
   const [error, setError] = useState('');
+  const { setAuthUser } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const data = await login(email, password);
-      console.log('Login success:', data);
-      navigate('/'); // Redirect to home on successful login
-    } catch (err) {
-      setError('Failed to login. Please check your credentials.');
+      const response = await login(email, password);
+      if (response.user_name) {
+        setAuthUser({
+          id: response.user_id,
+          email: response.user_email,
+          name: response.user_name
+        });
+        navigate('/profile'); // Navigate to profile page
+      } else {
+        setError('Login successful, but the user data was not returned.');
+      }
+    } catch (error) {
+      setError(error.response.data.message || 'Failed to login. Please check your credentials.');
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
-          </h2>
-        </div>
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          Sign in to your account
+        </h2>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <input type="hidden" name="remember" defaultValue="true" />
           <div className="rounded-md shadow-sm -space-y-px">
@@ -44,12 +54,12 @@ const Login = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div>
+            <div className="relative">
               <label htmlFor="password" className="sr-only">Password</label>
               <input
                 id="password"
                 name="password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 autoComplete="current-password"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
@@ -57,20 +67,30 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+              >
+                {showPassword ? (
+                  <EyeSlashIcon className="h-6 w-6 text-gray-700" />
+                ) : (
+                  <EyeIcon className="h-6 w-6 text-gray-700" />
+                )}
+              </button>
             </div>
           </div>
 
+          {error && <div className="text-red-600">{error}</div>}
+
           <div className="flex items-center justify-between">
-            {/* Add additional elements like 'Forgot your password?' if needed */}
-            <p className="text-sm">
+            <div className="text-sm">
               If you don't have an account,{' '}
               <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500">
                 click here to Register
               </Link>
-            </p>
+            </div>
           </div>
-
-          {error && <div className="text-sm text-red-600">{error}</div>}
 
           <div>
             <button

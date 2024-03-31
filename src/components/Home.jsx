@@ -1,7 +1,8 @@
+// Home.jsx
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { fetchRecentPosts, fetchAllPosts, searchPosts } from '../api';
 import Spinner from './Spinner';
+import PostList from './PostList'; // Make sure the import path is correct
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -17,7 +18,7 @@ const Home = () => {
         let data;
         if (viewMode === 'recent') {
           data = await fetchRecentPosts();
-          data = data.slice(0, 4); // Only take the first 4 recent posts
+          data = data.slice(0, 4); // Only take the first 4 recent posts if in recent mode
         } else {
           data = await fetchAllPosts();
         }
@@ -29,7 +30,6 @@ const Home = () => {
         setLoading(false);
       }
     };
-
     fetchData();
   }, [viewMode]);
 
@@ -54,6 +54,7 @@ const Home = () => {
   if (loading) {
     return <Spinner />;
   }
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-4xl font-bold text-center my-8">Welcome to My Blog Platform</h1>
@@ -97,17 +98,7 @@ const Home = () => {
       {/* Posts and Search Message */}
       <div>
         {searchMessage && <p className="text-center text-lg">{searchMessage}</p>}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {posts.map((post) => (
-            <article key={post.id} className="bg-white shadow-lg p-4 rounded-lg hover:shadow-2xl transition duration-300">
-              <h3 className="text-xl font-bold hover:text-blue-600 transition duration-300">
-                <Link to={`/posts/${post.id}`}>{post.title}</Link>
-              </h3>
-              <p className="mt-2 text-gray-600">{post.content.substring(0, 100)}...</p>
-              <Link to={`/posts/${post.id}`} className="text-blue-600 hover:underline mt-4 block">Read more</Link>
-            </article>
-          ))}
-        </div>
+        <PostList posts={posts} /> {/* Use PostList here */}
       </div>
     </div>
   );

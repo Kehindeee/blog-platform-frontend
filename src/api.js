@@ -1,4 +1,5 @@
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 
 const API_URL = 'http://localhost:8080/api'; 
 
@@ -77,12 +78,14 @@ export const fetchComments = async (postId) => {
 
 // Add a comment to a post
 export const addComment = async (postId, commentData) => {
+  
   try {
-    const response = await axios.post(`${API_URL}/posts/${postId}/comments`, commentData);
+    const response = await axios.post(`${API_URL}/posts/${postId}/comments`, commentData, {
+      withCredentials: true // Assuming you're using sessions and cookies
+    });
     return response.data;
   } catch (error) {
-    console.error(`Error adding comment to post ${postId}:`, error);
-    throw error;
+    handleError(error);
   }
 };
 
@@ -120,3 +123,44 @@ export const registerUser = async (userData) => {
     throw new Error(error.response.data.message || 'Failed to register');
   }
 };
+
+export const fetchPostsForUser = async (userId) => {
+  try {
+    const response = await axios.get(`${API_URL}/users/${userId}/posts`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching posts for user ${userId}:`, error);
+    throw error;
+  }
+};
+
+//Edit a comment on a post
+export const editComment = async (commentId, commentData, options = {}) => {
+  try {
+    const response = await axios.put(`${API_URL}/comments/${commentId}`, commentData, options);
+    return response.data;
+  } catch (error) {
+    console.error(`Error editing comment ${commentId}:`, error);
+    throw error;
+  }
+};
+
+export const deleteComment = async (commentId, options = {}) => {
+  try {
+    const response = await axios.delete(`${API_URL}/comments/${commentId}`, options);
+    return response.data;
+  } catch (error) {
+    console.error(`Error deleting comment ${commentId}:`, error);
+    throw error;
+  }
+};
+
+const handleError = (error) => {
+  // Extract the response error message if it exists or use a generic message
+  const errorMessage = error.response && error.response.data && error.response.data.message 
+                       ? error.response.data.message 
+                       : 'An unexpected error occurred.';
+  console.error('API Error:', errorMessage);
+  throw new Error(errorMessage); // This will pass the error message up to the caller
+};
+
