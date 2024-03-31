@@ -81,7 +81,7 @@ export const addComment = async (postId, commentData) => {
   
   try {
     const response = await axios.post(`${API_URL}/posts/${postId}/comments`, commentData, {
-      withCredentials: true // Assuming you're using sessions and cookies
+      withCredentials: true 
     });
     return response.data;
   } catch (error) {
