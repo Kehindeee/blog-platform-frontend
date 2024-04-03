@@ -1,30 +1,58 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './components/Home'
+import Home from './components/Home';
 import Login from './components/Login';
 import Profile from './components/Profile';
 import Register from './components/Register';
-import CreatePost from './components/CreatePost'
+import CreatePost from './components/CreatePost';
 import PostList from './components/PostList';
 import PostDetail from './components/PostDetail';
-import Admin from './components/AdminPage';
+import AdminDashboard from './components/AdminDashboard'; // Ensure this component is correctly imported
 import NavBar from './components/NavBar';
 import ProtectedRoute from './components/ProtectedRoute';
-// Import other components
+import EditPost from './components/EditPost';
+import AdminPage from './components/AdminPage';
+// Import other necessary components
 
 function App() {
   return (
     <Router>
       <NavBar />
       <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/admin" element={<Admin />} />
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/register" element={<Register />} />
-        <Route path="/createpost" element={<CreatePost />}/>
+        
+        <Route path="/profile" element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/createpost" element={
+          <ProtectedRoute adminOnly={true}>
+            <CreatePost />
+          </ProtectedRoute>
+        }/>
+        
         <Route path="/posts" element={<PostList />} />
         <Route path="/posts/:postId" element={<PostDetail />} />
+        
+        {/* Admin specific routes */}
+        <Route path="/admin/login" element={<AdminPage />} />
+        <Route path="/admin/dashboard" element={
+          <ProtectedRoute adminOnly={true}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/createpost" element={
+          <ProtectedRoute adminOnly={true}>
+            <CreatePost />
+          </ProtectedRoute>
+        }/>
+        <Route path="/posts" element={<PostList />} />
+        <Route path="/posts/:postId" element={<PostDetail />} />
+        <Route path="/edit-post/:postId" element={<ProtectedRoute adminOnly={true}><EditPost /></ProtectedRoute>} />
         {/* Define other routes */}
       </Routes>
     </Router>

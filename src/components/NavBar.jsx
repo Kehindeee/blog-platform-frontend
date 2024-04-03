@@ -39,7 +39,7 @@ const NavBar = () => {
           </div>
 
           {/* Primary Nav Menu */}
-          <div className={`hidden sm:block ${isOpen ? 'block' : 'hidden'}`}>
+          <div className={`sm:flex ${isOpen ? 'block' : 'hidden'}`}>
             <NavLink to="/" className={({ isActive }) => isActive ? "text-blue-500 border-b-2 border-blue-500 px-3 py-2 rounded-md text-sm font-medium" : "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"}>
               Home
             </NavLink>

@@ -1,119 +1,65 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const AdminPage = () => {
-    const [isLogin, setIsLogin] = useState(true);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
-    const [secretKey, setSecretKey] = useState('');
     const navigate = useNavigate();
+    const { setAuthUser } = useAuth();
 
+    // Note the change here: Removed parameters from handleLogin since it uses state variables directly
     const handleLogin = async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Prevent the default form submission behavior
         try {
-            const response = await axios.post('http://localhost:8080/api/login', {
+            const response = await axios.post(`http://localhost:8080/api/login`, {
                 email,
-                password,
+                password
+            }, {
+                withCredentials: true  // Include credentials to ensure cookies are handled
             });
-            console.log("Login successful:", response.data);
-            navigate('/'); // Make sure the route is correctly defined in your router setup
+            
+            // Assuming the response includes isAdmin
+            if(response.data.isAdmin) {
+                // Set user info and admin status in global state/context
+                setAuthUser(response.data);
+                navigate('/admin/dashboard'); // Redirect to admin dashboard
+            } else {
+                // Optionally handle non-admin login attempt
+                alert("You are not an admin.");
+            }
         } catch (error) {
-            console.error("Login failed:", error?.response?.data || error.message);
+            console.error('Login error:', error.response ? error.response.data : error);
         }
     };
-
-    const handleRegister = async (e) => {
-        e.preventDefault();
-        const payload = {
-            name,
-            email,
-            password,
-        };
-
-        
-        if (secretKey) payload.secretKey = secretKey;
-
-        try {
-            const response = await axios.post('http://localhost:8080/api/register', payload, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            console.log("Registration successful:", response.data);
-            setIsLogin(true); // Switch back to the login form upon successful registration
-        } catch (error) {
-            console.error("Registration failed:", error?.response?.data || error.message);
-        }
-    };
-
+          
     return (
-        <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100">
-            <div className="bg-white p-6 rounded shadow-md w-full max-w-md">
-                <h2 className="text-2xl font-bold mb-2 text-center">
-                    {isLogin ? 'Admin Login' : 'Admin Registration'}
-                </h2>
-                <button
-                    onClick={() => setIsLogin(!isLogin)}
-                    className="text-blue-500 hover:text-blue-700 transition-colors duration-200 mb-4"
-                >
-                    Switch to {isLogin ? 'Register' : 'Login'}
-                </button>
-                <form onSubmit={isLogin ? handleLogin : handleRegister} className="space-y-4">
-                    {!isLogin && (
-                        <>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Name</label>
-                                <input
-                                    type="text"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    required
-                                    className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Secret Key (for admins)</label>
-                                <input
-                                    type="text"
-                                    value={secretKey}
-                                    onChange={(e) => setSecretKey(e.target.value)}
-                                    className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm"
-                                />
-                            </div>
-                        </>
-                    )}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">Email</label>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm"
-                        />
+        <div className="flex h-screen bg-gray-200 justify-center items-center">
+            <div className="w-full max-w-xs">
+                {/* Note the change here: Corrected onSubmit to call handleLogin directly */}
+                <form onSubmit={handleLogin} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+                            Email
+                        </label>
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                     </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">Password</label>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm"
-                        />
+                    <div className="mb-6">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+                            Password
+                        </label>
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                     </div>
-                    <button
-                        type="submit"
-                        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    >
-                        {isLogin ? 'Login' : 'Register'}
-                    </button>
+                    <div className="flex items-center justify-between">
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                            Login
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
     );
 };
 
-export default AdminPage
+export default AdminPage;

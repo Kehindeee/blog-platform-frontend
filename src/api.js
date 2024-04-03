@@ -104,6 +104,8 @@ export const login = async (email, password) => {
       const response = await axios.post(`${API_URL}/login`, {
           email,
           password
+      }, {
+          withCredentials: true  // Include credentials to ensure cookies are handled
       });
       // Assuming your backend sends back a token or user data
       return response.data; // This will contain the token or user data
@@ -112,6 +114,7 @@ export const login = async (email, password) => {
       throw error;
   }
 };
+
   
 export const registerUser = async (userData) => {
   try {

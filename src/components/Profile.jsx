@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { fetchAllPosts } from '../api';
 import Spinner from './Spinner';
-import ProfileDropdown from './ProfileDropdown';
-import PostList from './PostList'; // Ensure you have this component
+import PostList from './PostList'; 
 
 const Profile = () => {
   const { user } = useAuth();
@@ -32,7 +31,7 @@ const Profile = () => {
 
   return (
     <>
-      <ProfileDropdown />
+  
       <div className="container mx-auto p-4">
         <h1 className="text-xl font-bold">Welcome, {user.name}!</h1>
         <h2 className="text-lg font-semibold my-2">Browse Posts</h2>
