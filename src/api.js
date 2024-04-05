@@ -105,7 +105,7 @@ export const login = async (email, password) => {
           email,
           password
       }, {
-          withCredentials: true  // Include credentials to ensure cookies are handled
+          withCredentials: true  
       });
       // Assuming your backend sends back a token or user data
       return response.data; // This will contain the token or user data
@@ -116,16 +116,32 @@ export const login = async (email, password) => {
 };
 
   
+// export const registerUser = async (userData) => {
+//   try {
+//     const response = await axios.post(`${API_URL}/register`, userData);
+//     return response.data; // The response from the server
+//   } catch (error) {
+//     // Handle the error accordingly
+//     // This will pass the error message up to the component
+//     throw new Error(error.response.data.message || 'Failed to register');
+//   }
+// };
+
+
 export const registerUser = async (userData) => {
   try {
     const response = await axios.post(`${API_URL}/register`, userData);
-    return response.data; // The response from the server
+    return response.data; // Successfully created user
   } catch (error) {
-    // Handle the error accordingly
-    // This will pass the error message up to the component
-    throw new Error(error.response.data.message || 'Failed to register');
+    if (error.response && error.response.status === 409) {
+      // Specific handling for user already exists
+      throw new Error('A user with this email already exists.');
+    } else {
+      throw new Error(error.response?.data?.message || 'Registration failed. Please try again.');
+    }
   }
 };
+
 
 export const fetchPostsForUser = async (userId) => {
   try {

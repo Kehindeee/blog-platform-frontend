@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../api';
 import { useAuth } from '../context/AuthContext';
 import { EyeIcon, EyeSlashIcon  } from '@heroicons/react/24/outline'; // Import both icons
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -11,26 +12,44 @@ const Login = () => {
   const [error, setError] = useState('');
   const { setAuthUser } = useAuth();
   const navigate = useNavigate();
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      const response = await login(email, password);
-      if (response.user_name) {
-        setAuthUser({
-          id: response.user_id,
-          email: response.user_email,
-          name: response.user_name
-        });
-        navigate('/profile'); // Navigate to profile page
-      } else {
-        setError('Login successful, but the user data was not returned.');
-      }
-    } catch (error) {
-      setError(error.response.data.message || 'Failed to login. Please check your credentials.');
+    
+    if (password.length < 8) {
+        toast.error("Password must be at least 8 characters long.");
+        return;
     }
-  };
 
+    try {
+        const { user } = await login(email, password); 
+        if (user) {
+            setAuthUser({
+                id: user.id,        
+                email: user.email,  
+                name: user.name,    
+                isAdmin: user.isAdmin 
+            });
+            toast.success('Login successful!', {
+                onClose: () => {
+                    user.isAdmin ? navigate('/admin/dashboard') : navigate('/profile'); // Navigate based on isAdmin status
+                }
+            });
+        } else {
+            setError('Login successful, but the user data was not returned.');
+        }
+    } catch (error) {
+        if(error.response && error.response.status === 400) {
+            // Specific message for bad request or handle other status codes as needed
+            toast.error(error.response.data.message || 'Invalid credentials, please try again.');
+        } else {
+            // General error handling
+            setError('Failed to login. Please check your credentials.');
+        }
+    }
+};
+
+
+     
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">

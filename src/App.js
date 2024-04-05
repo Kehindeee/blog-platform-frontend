@@ -11,12 +11,15 @@ import AdminDashboard from './components/AdminDashboard'; // Ensure this compone
 import NavBar from './components/NavBar';
 import ProtectedRoute from './components/ProtectedRoute';
 import EditPost from './components/EditPost';
-import AdminPage from './components/AdminPage';
+import { ToastContainer } from 'react-toastify';
+
+
 // Import other necessary components
 
 function App() {
   return (
     <Router>
+      <ToastContainer position="top-center" autoClose={5000} /> 
       <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -28,18 +31,10 @@ function App() {
             <Profile />
           </ProtectedRoute>
         } />
-        
-        <Route path="/createpost" element={
-          <ProtectedRoute adminOnly={true}>
-            <CreatePost />
-          </ProtectedRoute>
-        }/>
-        
         <Route path="/posts" element={<PostList />} />
         <Route path="/posts/:postId" element={<PostDetail />} />
         
         {/* Admin specific routes */}
-        <Route path="/admin/login" element={<AdminPage />} />
         <Route path="/admin/dashboard" element={
           <ProtectedRoute adminOnly={true}>
             <AdminDashboard />
