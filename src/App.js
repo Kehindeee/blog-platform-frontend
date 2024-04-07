@@ -7,7 +7,7 @@ import Register from './components/Register';
 import CreatePost from './components/CreatePost';
 import PostList from './components/PostList';
 import PostDetail from './components/PostDetail';
-import AdminDashboard from './components/AdminDashboard'; // Ensure this component is correctly imported
+import AdminDashboard from './components/AdminDashboard'; 
 import NavBar from './components/NavBar';
 import ProtectedRoute from './components/ProtectedRoute';
 import EditPost from './components/EditPost';
