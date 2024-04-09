@@ -20,7 +20,7 @@ const NavBar = () => {
           {/* Mobile menu button */}
           <div className="sm:hidden">
             <button onClick={() => setIsOpen(!isOpen)}>
-              {/* Icon for menu */}
+              {/* Toggle Icon */}
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 {isOpen ? (
                   // "X" icon for open menu
@@ -43,16 +43,22 @@ const NavBar = () => {
             <NavLink to="/" className={({ isActive }) => isActive ? "text-blue-500 border-b-2 border-blue-500 px-3 py-2 rounded-md text-sm font-medium" : "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"}>
               Home
             </NavLink>
-            {user ? (
+            {user && (
               <>
                 <NavLink to="/profile" className={({ isActive }) => isActive ? "text-blue-500 border-b-2 border-blue-500 px-3 py-2 rounded-md text-sm font-medium" : "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"}>
                   Profile
                 </NavLink>
+                {user.isAdmin && (
+                  <NavLink to="/admin/dashboard" className={({ isActive }) => isActive ? "text-blue-500 border-b-2 border-blue-500 px-3 py-2 rounded-md text-sm font-medium" : "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"}>
+                    Dashboard
+                  </NavLink>
+                )}
                 <button onClick={handleLogout} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                   Logout
                 </button>
               </>
-            ) : (
+            )}
+            {!user && (
               <NavLink to="/login" className={({ isActive }) => isActive ? "text-blue-500 border-b-2 border-blue-500 px-3 py-2 rounded-md text-sm font-medium" : "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"}>
                 Login
               </NavLink>
