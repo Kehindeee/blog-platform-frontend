@@ -26,3 +26,4 @@ export const AuthProvider = ({ children }) => {
 
 // Hook for child components to get the auth object and re-render when it changes
 export const useAuth = () => useContext(AuthContext);
+export { AuthContext };

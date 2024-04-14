@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { fetchRecentPosts, fetchAllPosts, searchPosts } from '../api';
 import Spinner from './Spinner';
-import PostList from './PostList'; // Make sure the import path is correct
+import PostList from './PostList'; 
 
 const Home = () => {
   const [posts, setPosts] = useState([]);

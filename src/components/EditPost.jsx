@@ -8,7 +8,7 @@ const EditPost = () => {
     const [post, setPost] = useState({
         title: '',
         content: '',
-        // Add other fields as necessary
+        
     });
 
     useEffect(() => {
@@ -66,6 +66,7 @@ const EditPost = () => {
                 <button
                     type="submit"
                     className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    data-cy="edit-button"
                 >
                     Update Post
                 </button>
