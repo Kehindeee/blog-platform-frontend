@@ -1,6 +1,6 @@
-// src/components/CreatePost.jsx
 import React, { useState } from 'react';
-import { createPost } from '../api'; // Adjust the import path as necessary
+import { createPost } from '../api';
+import { toast } from 'react-toastify'; // Import toast
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');
@@ -10,7 +10,7 @@ const CreatePost = () => {
     event.preventDefault();
     // Validate input data
     if (!title || !content) {
-      alert('Title and content are required');
+      toast.error('Title and content are required'); // Use toast for error message
       return;
     }
     try {
@@ -18,11 +18,11 @@ const CreatePost = () => {
       // Reset form fields
       setTitle('');
       setContent('');
-      alert('Post created successfully!');
+      toast.success('Post created successfully!'); // Use toast for success message
       // Optionally, redirect the user to the posts page or clear the form
     } catch (error) {
       console.error('Failed to create the post', error);
-      alert('Failed to create the post');
+      toast.error('Failed to create the post'); // Use toast for error message
     }
   };
 

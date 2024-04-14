@@ -1,46 +1,55 @@
-// src/components/PostDetail.jsx
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom'; 
-import { fetchPostById, fetchComments, addComment } from '../api';
-import Comments from './Comments';
-import AddComment from './AddComment';
+import { useParams } from 'react-router-dom';
+import { fetchPostById } from '../api';
+import Spinner from './Spinner';
+import CommentsSection from './CommentsSection'; 
 
 const PostDetail = () => {
-  const { postId } = useParams(); // Retrieve postId from URL
   const [post, setPost] = useState(null);
-  const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
+  const { postId } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
-      const fetchedPost = await fetchPostById(postId);
-      setPost(fetchedPost);
-      const fetchedComments = await fetchComments(postId);
-      setComments(fetchedComments);
+      try {
+        setLoading(true);
+        const postData = await fetchPostById(postId);
+        setPost(postData);
+      } catch (error) {
+        console.error('Error fetching post:', error);
+        setErrorMessage('Failed to fetch post details.');
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchData();
   }, [postId]);
 
-  const handleAddComment = async (commentData) => {
-    await addComment(postId, { comment: commentData });
-    // Reload comments
-    const fetchedComments = await fetchComments(postId);
-    setComments(fetchedComments);
-  };
+  if (loading) {
+    return <Spinner />;
+  }
 
   if (!post) {
-    return <div>Loading...</div>;
+    // Display error message or alternative content if post is not available
+    return <p className="text-center text-red-500">{errorMessage || 'Post not found.'}</p>;
   }
 
   return (
-    <div className="container mx-auto px-4">
-      <h1 className="text-3xl font-bold my-8">{post.title}</h1>
-      <p>{post.content}</p>
-      <div className="my-8">
-        <h2 className="text-2xl font-bold">Comments</h2>
-        <Comments comments={comments} />
-        <AddComment onAddComment={handleAddComment} />
-      </div>
+    <div className="container mx-auto mt-10 p-5">
+      <article className="max-w-xl mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+        <div className="md:flex">
+          <div className="p-8">
+            <h2 className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">{post.title}</h2>
+            <p className="mt-2 text-gray-500">{post.content}</p>
+            {/* Error message is shown only if there's an error and no post */}
+            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+            {/* Render the CommentsSection only if the post is available */}
+            <CommentsSection postId={postId} />
+          </div>
+        </div>
+      </article>
     </div>
   );
 };

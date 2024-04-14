@@ -1,44 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { getPosts } from '../api'; // Import the function to fetch posts from the API
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Posts = () => {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+const PostList = ({ posts, loading }) => {
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const postsData = await getPosts(); // Fetch posts from the API
-        setPosts(postsData);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching posts:', error);
-        setLoading(false);
-      }
-    };
-
-    fetchPosts(); // Call the fetchPosts function when the component mounts
-  }, []);
+  if (loading) {
+    return <p className="text-center">Loading...</p>;
+  }
 
   return (
-    <div>
-      <h1>Posts</h1>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <div>
-          {posts.map(post => (
-            <div key={post.id}>
-              <h2>{post.title}</h2>
-              <p>{post.content}</p>
-              <p>Created At: {new Date(post.createdAt).toLocaleString()}</p>
-              <hr />
-            </div>
-          ))}
+    <div className="space-y-8">
+      {posts.map(post => (
+        <div key={post.id} className="bg-white rounded-lg shadow-lg p-5 hover:shadow-2xl transition duration-300 ease-in-out">
+          <h2 className="text-2xl font-semibold">
+            <Link to={`/posts/${post.id}`}>{post.title}</Link> {/* Enable navigation to PostDetail */}
+          </h2>
+          <p className="text-gray-700">{post.content}</p>
+          <div className="flex justify-between items-center">
+            <p className="text-gray-500 text-sm">{formatDate(post.created_at)}</p>
+            {/* Link to the post detail with a comment count (assuming 'commentCount' is a property of the post object) */}
+            <Link to={`/posts/${post.id}`} className="text-gray-600 hover:underline">
+              {post.commentCount ? `${post.commentCount} Comments` : 'No comments yet'}
+            </Link>
+          </div>
         </div>
-      )}
+      ))}
     </div>
   );
 };
 
-export default Posts;
+export default PostList;
