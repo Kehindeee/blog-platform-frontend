@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, MemoryRouter, Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import Login from './components/Login';
 import Profile from './components/Profile';
@@ -14,11 +14,12 @@ import EditPost from './components/EditPost';
 import { ToastContainer } from 'react-toastify';
 
 
-// Import other necessary components
+const AppRouter = process.env.NODE_ENV === 'test' ? MemoryRouter : Router;
+
 
 function App() {
   return (
-    <Router>
+    <AppRouter>
       <ToastContainer position="top-center" autoClose={5000} /> 
       <NavBar />
       <Routes>
@@ -50,7 +51,7 @@ function App() {
         <Route path="/edit-post/:postId" element={<ProtectedRoute adminOnly={true}><EditPost /></ProtectedRoute>} />
         {/* Define other routes */}
       </Routes>
-    </Router>
+    </AppRouter>
   );
 }
 
