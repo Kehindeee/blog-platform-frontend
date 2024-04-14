@@ -3,9 +3,6 @@ import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 import Modal from 'react-modal';
 
-// Setup for react-modal (place this in your index.js or App.js, just once)
-Modal.setAppElement('#root');
-
 const AdminDashboard = () => {
     const [users, setUsers] = useState([]);
     const [posts, setPosts] = useState([]);
@@ -13,6 +10,10 @@ const AdminDashboard = () => {
     const [currentItem, setCurrentItem] = useState({ type: '', id: null });
 
     useEffect(() => {
+        if (document.getElementById('root')) {
+            Modal.setAppElement('#root');
+        }
+
         const fetchUsers = async () => {
             try {
                 const response = await axios.get('http://localhost:8080/api/users');
@@ -83,8 +84,9 @@ const AdminDashboard = () => {
                         <li key={post.id} className="flex justify-between items-center bg-gray-100 p-4 rounded">
                             <span>{post.title}</span>
                             <div>
-                                <NavLink to={`/edit-post/${post.id}`} className="inline-block bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700 mr-2">Edit</NavLink>
-                                <button onClick={() => handleDeleteConfirmation('post', post.id)} className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700">Delete</button>
+                                <NavLink to={`/edit-post/${post.id}`} className="inline-block bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700 mr-2"
+                                 data-cy={`edit-post-${post.id}`}>Edit</NavLink>                              
+                                 <button onClick={() => handleDeleteConfirmation('post', post.id)} className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700">Delete</button>
                             </div>
                         </li>
                     ))}
