@@ -1,13 +1,13 @@
 /* eslint-disable no-undef */
-import React from 'react'
+import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { mount } from 'cypress/react18';
-import PostList from './PostList'
+import PostList from './PostList';
 import NavBar from './NavBar';
 import '../../src/index.css';
 
 describe('<PostList />', () => {
-  it('renders the posts', () => {
+  it('renders the posts with formatted dates', () => {
     const mockPosts = [
       {
         id: 1,
@@ -28,16 +28,22 @@ describe('<PostList />', () => {
     // Mount the PostList component with mockPosts
     mount(
       <BrowserRouter>
-      <NavBar />
+        <NavBar />
         <PostList posts={mockPosts} loading={false} />
       </BrowserRouter>
     );
 
-    // Assert that the titles of the mock posts are displayed
+    // Assert that the posts are displayed
     mockPosts.forEach((post) => {
       cy.contains(post.title).should('be.visible');
       cy.contains(post.content).should('be.visible');
-      cy.contains(new RegExp(post.commentCount + ' Comments')).should('be.visible');
+      cy.contains(`${post.commentCount} Comments`).should('be.visible');
+
+      const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+      const formattedDate = new Date(post.created_at).toLocaleDateString(undefined, options);
+      
+      // Assert that the formatted date is displayed
+      cy.get('.text-gray-500').contains(formattedDate).should('be.visible');
     });
   });
 
@@ -45,6 +51,7 @@ describe('<PostList />', () => {
     // Mount the PostList component with loading=true
     mount(
       <BrowserRouter>
+        <NavBar />
         <PostList posts={[]} loading={true} />
       </BrowserRouter>
     );

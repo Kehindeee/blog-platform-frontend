@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../api';
 import { useAuth } from '../context/AuthContext';
-import { EyeIcon, EyeSlashIcon  } from '@heroicons/react/24/outline'; // Import both icons
+import { EyeIcon, EyeSlashIcon  } from '@heroicons/react/24/outline'; // Import EyeIcon and EyeSlashIcon
 import { toast } from 'react-toastify';
 
 const Login = () => {

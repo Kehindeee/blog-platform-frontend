@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createPost } from '../api';
-import { toast } from 'react-toastify'; // Import toast
+import { toast } from 'react-toastify'; 
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');
@@ -18,7 +18,7 @@ const CreatePost = () => {
       // Reset form fields
       setTitle('');
       setContent('');
-      toast.success('Post created successfully!'); // Use toast for success message
+      toast.success('Post created successfully!'); 
       // Optionally, redirect the user to the posts page or clear the form
     } catch (error) {
       console.error('Failed to create the post', error);

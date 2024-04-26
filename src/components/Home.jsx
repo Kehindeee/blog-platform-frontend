@@ -2,12 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import { fetchRecentPosts, fetchAllPosts, searchPosts } from '../api';
 import Spinner from './Spinner';
-import PostList from './PostList'; 
+import PostList from './PostList';
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [viewMode, setViewMode] = useState('recent'); // 'recent' or 'all'
+  const [viewMode, setViewMode] = useState('recent');
   const [searchMessage, setSearchMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -18,11 +18,15 @@ const Home = () => {
         let data;
         if (viewMode === 'recent') {
           data = await fetchRecentPosts();
-          data = data.slice(0, 4); // Only take the first 4 recent posts if in recent mode
+          
+          if (data) {
+            data = data.slice(0, 4);
+          }
         } else {
           data = await fetchAllPosts();
         }
-        setPosts(data);
+        // Set an empty array as the default value for posts if data is undefined
+        setPosts(data || []);
         setSearchMessage('');
       } catch (error) {
         console.error('Error fetching posts:', error);

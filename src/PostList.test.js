@@ -1,8 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import renderer from 'react-test-renderer'; // For snapshot testing
 import PostList from './components/PostList';
 import '@testing-library/jest-dom';
-import { MemoryRouter } from 'react-router-dom'; // Import MemoryRouter
+import { MemoryRouter } from 'react-router-dom'; // Suitable for components using react-router
 
 // Mock posts data for testing
 const mockPosts = [
@@ -23,7 +24,7 @@ const mockPosts = [
 ];
 
 describe('PostList Component', () => {
-  it('renders posts when not loading', async () => {
+  it('renders posts when not loading', () => {
     render(
       <MemoryRouter> {/* Wrap PostList in MemoryRouter for testing */}
         <PostList posts={mockPosts} loading={false} />
@@ -45,5 +46,16 @@ describe('PostList Component', () => {
       </MemoryRouter>
     );
     expect(screen.getByText('Loading...')).toBeInTheDocument();
+  });
+
+  // Add a snapshot test to ensure the UI does not change unexpectedly
+  it('matches the snapshot', () => {
+    const component = renderer.create(
+      <MemoryRouter>
+        <PostList posts={mockPosts} loading={false} />
+      </MemoryRouter>
+    );
+    let tree = component.toJSON();
+    expect(tree).toMatchSnapshot();
   });
 });

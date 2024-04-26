@@ -116,16 +116,6 @@ export const login = async (email, password) => {
 };
 
   
-// export const registerUser = async (userData) => {
-//   try {
-//     const response = await axios.post(`${API_URL}/register`, userData);
-//     return response.data; // The response from the server
-//   } catch (error) {
-//     // Handle the error accordingly
-//     // This will pass the error message up to the component
-//     throw new Error(error.response.data.message || 'Failed to register');
-//   }
-// };
 
 
 export const registerUser = async (userData) => {
@@ -163,7 +153,7 @@ export const editComment = async (commentId, commentData, options = {}) => {
     throw error;
   }
 };
-
+// Delete a comment on a post
 export const deleteComment = async (commentId, options = {}) => {
   try {
     const response = await axios.delete(`${API_URL}/comments/${commentId}`, options);

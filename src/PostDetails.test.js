@@ -1,68 +1,75 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import userEvent from '@testing-library/user-event';
 import PostDetail from './components/PostDetail';
 import * as api from './api'; 
 import { MemoryRouter } from 'react-router-dom';
+import { getCurrentUser } from './mocks';
 
-// Mocking the useParams hook
 jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'), 
-  useParams: jest.fn(),
+  ...jest.requireActual('react-router-dom'),
+  useParams: () => ({ postId: '1' }),
 }));
 
-describe('PostDetail', () => {
+jest.mock('./api', () => ({
+  ...jest.requireActual('./api'), 
+  fetchComments: jest.fn(),
+  submitComment: jest.fn(),
+  fetchPostById: jest.fn(),
+}));
+
+jest.mock('./mocks', () => ({
+  getCurrentUser: jest.fn(),
+}));
+
+describe('PostDetail with Comments', () => {
   const mockPost = {
     id: '1',
     title: 'Test Post',
     content: 'This is a test post content.',
+    comments: [
+      { id: '1', text: 'First comment', author: 'User1' },
+      { id: '2', text: 'Second comment', author: 'User2' },
+    ],
+  };
+
+  const mockUser = {
+    id: 'user1',
+    name: 'John Doe',
   };
 
   beforeEach(() => {
-    // Mock the fetchPostById function before each test
-    jest.spyOn(api, 'fetchPostById').mockResolvedValue(mockPost);
-    // Mock useParams to return a fixed postId
-    jest.requireMock('react-router-dom').useParams.mockReturnValue({ postId: mockPost.id });
+    api.fetchPostById.mockResolvedValue(mockPost);
+    api.fetchComments.mockResolvedValue(mockPost.comments);
+    getCurrentUser.mockReturnValue(mockUser);
   });
 
   afterEach(() => {
     jest.resetAllMocks();
   });
 
-  test('loads and displays the post', async () => {
-    render(
-      <MemoryRouter>
-        <PostDetail />
-      </MemoryRouter>
-    );
+  test('renders post details and comments', async () => {
+    render(<MemoryRouter><PostDetail /></MemoryRouter>);
 
-    // Check for loading state if applicable
-    expect(screen.getByText(/loading/)).toBeInTheDocument(); 
+    expect(await screen.findByText(mockPost.title)).toBeInTheDocument();
+    expect(screen.getByText(mockPost.content)).toBeInTheDocument();
 
-    // Wait for the post title to be in the document
-    await waitFor(() => {
-      expect(screen.getByText(mockPost.title)).toBeInTheDocument(); // Check for post title
-    });
-
-    
-    await waitFor(() => {
-      expect(screen.getByText(mockPost.content)).toBeInTheDocument(); // Check for post content
-    });
+    for (const comment of mockPost.comments) {
+      expect(await screen.findByText(comment.text)).toBeInTheDocument();
+    }
   });
 
-  test('handles fetch error', async () => {
-    // Override the mock to simulate an error
-    api.fetchPostById.mockRejectedValue(new Error('Failed to fetch post details.'));
+  test('handles comment submission', async () => {
+    render(<MemoryRouter><PostDetail /></MemoryRouter>);
 
-    render(
-      <MemoryRouter>
-        <PostDetail />
-      </MemoryRouter>
-    );
+    const newCommentText = 'This is a new comment';
+    const commentInput = screen.getByRole('textbox', { name: /add comment/ });
+    userEvent.type(commentInput, newCommentText);
 
-    // Wait for the error message to be in the document
-    await waitFor(() => {
-      expect(screen.getByText(/failed to fetch post details/)).toBeInTheDocument();
-    });
+    userEvent.click(screen.getByRole('button', { name: /submit/ }));
+
+    expect(api.submitComment).toHaveBeenCalledWith(mockPost.id, newCommentText);
+    expect(await screen.findByText(newCommentText)).toBeInTheDocument();
   });
 });
