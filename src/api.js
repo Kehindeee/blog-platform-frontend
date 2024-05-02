@@ -90,9 +90,9 @@ export const addComment = async (postId, commentData) => {
     handleError(error);
   }
 };
-
+ // Implement the logic to fetch posts from the  API server
+  // and return the data to the caller
 export const getPosts = async () => {
-  // Implement the logic to fetch posts from the  API server
 
   const response = await fetch('http://localhost:8080/api/posts');
   if (!response.ok) {
@@ -118,7 +118,7 @@ export const login = async (email, password) => {
 
   
 
-
+// Register a new user
 export const registerUser = async (userData) => {
   try {
     const response = await axios.post(`${API_URL}/register`, userData);
@@ -133,7 +133,7 @@ export const registerUser = async (userData) => {
   }
 };
 
-
+// Fetch Posts for a User
 export const fetchPostsForUser = async (userId) => {
   try {
     const response = await axios.get(`${API_URL}/users/${userId}/posts`);
