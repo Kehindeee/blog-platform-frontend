@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PostList Component matches the snapshot 1`] = `
+<div
+  className="space-y-8"
+>
+  <div
+    className="bg-white rounded-lg shadow-lg p-5 hover:shadow-2xl transition duration-300 ease-in-out"
+  >
+    <h2
+      className="text-2xl font-semibold"
+    >
+      <a
+        href="/posts/1"
+        onClick={[Function]}
+      >
+        First Post
+      </a>
+       
+    </h2>
+    <p
+      className="text-gray-700"
+    >
+      This is the first post content
+    </p>
+    <div
+      className="flex justify-between items-center"
+    >
+      <p
+        className="text-gray-500 text-sm"
+      >
+        1 January 2021 at 12:00
+      </p>
+      <a
+        className="text-gray-600 hover:underline"
+        href="/posts/1"
+        onClick={[Function]}
+      >
+        2 Comments
+      </a>
+    </div>
+  </div>
+  <div
+    className="bg-white rounded-lg shadow-lg p-5 hover:shadow-2xl transition duration-300 ease-in-out"
+  >
+    <h2
+      className="text-2xl font-semibold"
+    >
+      <a
+        href="/posts/2"
+        onClick={[Function]}
+      >
+        Second Post
+      </a>
+       
+    </h2>
+    <p
+      className="text-gray-700"
+    >
+      This is the second post content
+    </p>
+    <div
+      className="flex justify-between items-center"
+    >
+      <p
+        className="text-gray-500 text-sm"
+      >
+        2 January 2021 at 12:00
+      </p>
+      <a
+        className="text-gray-600 hover:underline"
+        href="/posts/2"
+        onClick={[Function]}
+      >
+        3 Comments
+      </a>
+    </div>
+  </div>
+</div>
+`;

@@ -1,16 +1,23 @@
-// Home.jsx
+// This component will be the main page of the blog platform. 
+//It will display a list of recent posts by default, but users can also view all posts. 
+// Users can also search for posts by entering a search query in the search bar. 
+// The search results will be displayed below the search bar. 
+//The Home component will fetch data from the API using the fetchRecentPosts, fetchAllPosts, and searchPosts functions.
+// The PostList component will be used to display the list of posts.
+
 import React, { useEffect, useState } from 'react';
 import { fetchRecentPosts, fetchAllPosts, searchPosts } from '../api';
 import Spinner from './Spinner';
-import PostList from './PostList'; 
+import PostList from './PostList';
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [viewMode, setViewMode] = useState('recent'); // 'recent' or 'all'
+  const [viewMode, setViewMode] = useState('recent');
   const [searchMessage, setSearchMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
+// Fetch recent posts when the component mounts
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
@@ -18,11 +25,15 @@ const Home = () => {
         let data;
         if (viewMode === 'recent') {
           data = await fetchRecentPosts();
-          data = data.slice(0, 4); // Only take the first 4 recent posts if in recent mode
+          
+          if (data) {
+            data = data.slice(0, 4);
+          }
         } else {
           data = await fetchAllPosts();
         }
-        setPosts(data);
+        // Set an empty array as the default value for posts if data is undefined
+        setPosts(data || []);
         setSearchMessage('');
       } catch (error) {
         console.error('Error fetching posts:', error);
@@ -32,7 +43,7 @@ const Home = () => {
     };
     fetchData();
   }, [viewMode]);
-
+// Handle search functionality
   const handleSearch = async () => {
     setLoading(true);
     try {
@@ -54,7 +65,7 @@ const Home = () => {
   if (loading) {
     return <Spinner />;
   }
-
+// Render the Home component
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-4xl font-bold text-center my-8">Welcome to My Blog Platform</h1>

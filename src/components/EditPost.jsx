@@ -1,7 +1,8 @@
+// Code to edit a post
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-
+// EditPost component
 const EditPost = () => {
     const { postId } = useParams();
     const navigate = useNavigate();
@@ -10,7 +11,7 @@ const EditPost = () => {
         content: '',
         
     });
-
+// Fetch the post data
     useEffect(() => {
         const fetchPost = async () => {
             try {
@@ -22,12 +23,12 @@ const EditPost = () => {
         };
         fetchPost();
     }, [postId]);
-
+// Handle changes to the form fields
     const handleChange = (e) => {
         const { name, value } = e.target;
         setPost({ ...post, [name]: value });
     };
-
+// Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -37,7 +38,7 @@ const EditPost = () => {
             console.error("Error updating post:", error.response?.data || error.message);
         }
     };
-
+// Render the EditPost component
     return (
         <div className="p-8">
             <h1 className="text-3xl font-semibold mb-4">Edit Post</h1>

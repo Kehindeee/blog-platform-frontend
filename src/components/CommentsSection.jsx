@@ -1,8 +1,10 @@
+// Implement the CommentsSection component to display comments for a post.
+// Include the logic to fetch comments, add a new comment, edit a comment, and delete a comment.
 import React, { useState, useEffect } from 'react';
 import { fetchComments, deleteComment, editComment, addComment } from '../api';
 import { useAuth } from '../context/AuthContext';
 
-
+// Implement the CommentsSection component
 const CommentsSection = ({ postId }) => {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,8 +12,10 @@ const CommentsSection = ({ postId }) => {
   const [editText, setEditText] = useState('');
   const [newCommentText, setNewCommentText] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  // Get the user object from the AuthContext
   const { user } = useAuth();
 
+// Implement the logic to fetch comments for a post
   useEffect(() => {
     const loadComments = async () => {
       try {
@@ -29,6 +33,8 @@ const CommentsSection = ({ postId }) => {
     loadComments();
   }, [postId, user])
 
+// Implement the logic to submit a new comment
+
   const handleNewCommentSubmit = async (event) => {
     event.preventDefault();
     if (newCommentText.trim()) {
@@ -43,14 +49,12 @@ const CommentsSection = ({ postId }) => {
       }
     }
   };
-
+// Implement the logic to edit a comment
   const handleEdit = (comment) => {
     setEditCommentId(comment.id);
     setEditText(comment.comment);
   };
-
-  console.log("Logged in user details: ", user);
-
+// Implement the logic to delete a comment
   const handleDelete = async (commentId) => {
     try {
       await deleteComment(commentId);
@@ -60,7 +64,7 @@ const CommentsSection = ({ postId }) => {
       setErrorMessage('Failed to delete comment.');
     }
   };
-
+// Implement the logic to submit an edited comment
   const handleEditSubmit = async (event) => {
     event.preventDefault();
     if (!editText.trim()) return;
@@ -80,7 +84,7 @@ const CommentsSection = ({ postId }) => {
   if (loading) {
     return <p>Loading comments...</p>;
   }
-
+// Implement the UI for the comments section
   return (
     <div className="container mx-auto my-8">
       <h3 className="text-lg font-semibold mb-4">Comments</h3>

@@ -1,6 +1,9 @@
+// This component displays a list of posts. Each post is displayed in a card-like format with the post title, content, and creation date.
+// The component also includes a link to the post detail page. The component also displays the number of comments for each post, if available.
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+// Define the PostList component
 const PostList = ({ posts, loading }) => {
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
@@ -10,7 +13,7 @@ const PostList = ({ posts, loading }) => {
   if (loading) {
     return <p className="text-center">Loading...</p>;
   }
-
+// Display the list of posts
   return (
     <div className="space-y-8">
       {posts.map(post => (

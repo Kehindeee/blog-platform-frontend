@@ -1,3 +1,5 @@
+// Cypress test for the CreatePost component
+
 /* eslint-disable no-undef */
 import React from 'react';
 import { mount } from 'cypress/react18';
@@ -6,6 +8,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import NavBar from './NavBar';
 import '../../src/index.css'; 
+
+// Test the CreatePost component
 describe('CreatePost', () => {
   beforeEach(() => {
     // Set up the intercepted API call

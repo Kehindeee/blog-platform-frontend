@@ -1,10 +1,12 @@
+// Code for the Login component
+
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../api';
 import { useAuth } from '../context/AuthContext';
-import { EyeIcon, EyeSlashIcon  } from '@heroicons/react/24/outline'; // Import both icons
+import { EyeIcon, EyeSlashIcon  } from '@heroicons/react/24/outline'; // Import EyeIcon and EyeSlashIcon
 import { toast } from 'react-toastify';
-
+// Login component
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -12,6 +14,8 @@ const Login = () => {
   const [error, setError] = useState('');
   const { setAuthUser } = useAuth();
   const navigate = useNavigate();
+
+  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
     
@@ -48,7 +52,7 @@ const Login = () => {
     }
 };
 
-
+// Return the login form
      
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">

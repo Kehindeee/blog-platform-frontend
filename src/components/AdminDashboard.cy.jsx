@@ -1,9 +1,11 @@
+/* eslint-disable no-undef */
 import React from 'react';
 import { mount } from 'cypress/react18';
 import AdminDashboard from './AdminDashboard';
 import { BrowserRouter as Router } from 'react-router-dom';
 import '../../src/index.css'; 
 
+// Test the AdminDashboard component
 describe('<AdminDashboard />', () => {
   beforeEach(() => {
     cy.intercept('GET', 'http://localhost:8080/api/users', { fixture: 'users.json' });

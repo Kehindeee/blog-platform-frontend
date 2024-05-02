@@ -1,9 +1,12 @@
+// Cypress test for the Home component
+/* eslint-disable no-undef */
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import Home from './Home';
 import { mount } from 'cypress/react18';
 import '../../src/index.css';
 
+// Test the Home component
 describe('<Home />', () => {
   const checkPostsVisibility = (posts) => {
     posts.forEach((post) => {
@@ -52,7 +55,6 @@ describe('<Home />', () => {
 
   it('displays all posts when "All Posts" is clicked', () => {
     cy.contains('All Posts').click();
-    // Removed the explicit wait time here, it's better to wait for the alias directly
     cy.wait('@getAllPosts').then((interception) => {
       expect(interception.response.statusCode).to.equal(200);
       checkPostsVisibility(interception.response.body);

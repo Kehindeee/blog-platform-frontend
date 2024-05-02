@@ -20,7 +20,7 @@ const MockAuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
+// Test the CommentsSection component
 describe('CommentsSection', () => {
   const mockPostId = '1';
   const mockComments = [

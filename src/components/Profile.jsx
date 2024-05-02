@@ -1,14 +1,17 @@
+// Code to display the user's name and list of posts
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { fetchAllPosts } from '../api';
 import Spinner from './Spinner';
 import PostList from './PostList'; 
 
+// Profile component
 const Profile = () => {
   const { user } = useAuth();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+// Fetch all posts when the component mounts
   useEffect(() => {
     if (user) {
       const fetchData = async () => {
@@ -28,7 +31,7 @@ const Profile = () => {
   if (!user || loading) {
     return <Spinner />;
   }
-
+// Display the user's name and list of posts
   return (
     <>
   

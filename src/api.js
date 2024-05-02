@@ -1,3 +1,5 @@
+// This file contains the API functions for interacting with the backend server.
+// The functions use the Axios library to make HTTP requests to the server.
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
@@ -88,9 +90,9 @@ export const addComment = async (postId, commentData) => {
     handleError(error);
   }
 };
-
+ // Implement the logic to fetch posts from the  API server
+  // and return the data to the caller
 export const getPosts = async () => {
-  // Implement the logic to fetch posts from your API server
 
   const response = await fetch('http://localhost:8080/api/posts');
   if (!response.ok) {
@@ -107,8 +109,7 @@ export const login = async (email, password) => {
       }, {
           withCredentials: true  
       });
-      // Assuming your backend sends back a token or user data
-      return response.data; // This will contain the token or user data
+      return response.data; 
   } catch (error) {
       console.error('Login error:', error.response ? error.response.data : error);
       throw error;
@@ -116,18 +117,8 @@ export const login = async (email, password) => {
 };
 
   
-// export const registerUser = async (userData) => {
-//   try {
-//     const response = await axios.post(`${API_URL}/register`, userData);
-//     return response.data; // The response from the server
-//   } catch (error) {
-//     // Handle the error accordingly
-//     // This will pass the error message up to the component
-//     throw new Error(error.response.data.message || 'Failed to register');
-//   }
-// };
 
-
+// Register a new user
 export const registerUser = async (userData) => {
   try {
     const response = await axios.post(`${API_URL}/register`, userData);
@@ -142,7 +133,7 @@ export const registerUser = async (userData) => {
   }
 };
 
-
+// Fetch Posts for a User
 export const fetchPostsForUser = async (userId) => {
   try {
     const response = await axios.get(`${API_URL}/users/${userId}/posts`);
@@ -163,7 +154,7 @@ export const editComment = async (commentId, commentData, options = {}) => {
     throw error;
   }
 };
-
+// Delete a comment on a post
 export const deleteComment = async (commentId, options = {}) => {
   try {
     const response = await axios.delete(`${API_URL}/comments/${commentId}`, options);

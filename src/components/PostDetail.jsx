@@ -1,3 +1,4 @@
+// Code for the PostDetail component goes here.
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchPostById } from '../api';
@@ -10,6 +11,7 @@ const PostDetail = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const { postId } = useParams();
 
+// Fetch the post data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -35,7 +37,7 @@ const PostDetail = () => {
     // Display error message or alternative content if post is not available
     return <p className="text-center text-red-500">{errorMessage || 'Post not found.'}</p>;
   }
-
+// Render the post details and comments section
   return (
     <div className="container mx-auto mt-10 p-5">
       <article className="max-w-xl mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
