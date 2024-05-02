@@ -1,4 +1,10 @@
-// Home.jsx
+// This component will be the main page of the blog platform. 
+//It will display a list of recent posts by default, but users can also view all posts. 
+// Users can also search for posts by entering a search query in the search bar. 
+// The search results will be displayed below the search bar. 
+//The Home component will fetch data from the API using the fetchRecentPosts, fetchAllPosts, and searchPosts functions.
+// The PostList component will be used to display the list of posts.
+
 import React, { useEffect, useState } from 'react';
 import { fetchRecentPosts, fetchAllPosts, searchPosts } from '../api';
 import Spinner from './Spinner';
@@ -11,6 +17,7 @@ const Home = () => {
   const [searchMessage, setSearchMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
+// Fetch recent posts when the component mounts
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
@@ -36,7 +43,7 @@ const Home = () => {
     };
     fetchData();
   }, [viewMode]);
-
+// Handle search functionality
   const handleSearch = async () => {
     setLoading(true);
     try {
@@ -58,7 +65,7 @@ const Home = () => {
   if (loading) {
     return <Spinner />;
   }
-
+// Render the Home component
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-4xl font-bold text-center my-8">Welcome to My Blog Platform</h1>
