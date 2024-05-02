@@ -48,9 +48,7 @@ const CommentsSection = ({ postId }) => {
     setEditCommentId(comment.id);
     setEditText(comment.comment);
   };
-
-  console.log("Logged in user details: ", user);
-
+// Implement the logic to delete a comment
   const handleDelete = async (commentId) => {
     try {
       await deleteComment(commentId);
