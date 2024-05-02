@@ -6,6 +6,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import NavBar from './NavBar';
 import '../../src/index.css'; 
+
+// Test the CreatePost component
 describe('CreatePost', () => {
   beforeEach(() => {
     // Set up the intercepted API call
