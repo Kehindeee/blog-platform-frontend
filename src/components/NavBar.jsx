@@ -1,7 +1,7 @@
+// Note: Navigation bar component for the application
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, setAuthUser } = useAuth();
@@ -12,7 +12,7 @@ const NavBar = () => {
     setAuthUser(null);
     navigate('/login');
   };
-
+// Return the navigation bar
   return (
     <nav className="bg-gray-800 text-white p-2 sm:p-4">
       <div className="max-w-6xl mx-auto px-4">
