@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+// End to End Testing with Cypress
 describe('The Home Page', () => {
   it('successfully loads', () => {
     cy.visit('http://localhost:3000');
@@ -35,7 +36,7 @@ describe('Fetching Posts', () => {
     cy.wait('@getAllPosts');
     cy.wait(5000); 
   });
-
+// Login Testing
   describe('Login', () => {
     beforeEach(() => {
       // Intercept the POST request to the API for login
@@ -101,7 +102,7 @@ describe('Fetching Posts', () => {
     });
   });
 });
-
+// Admin Dashboard Testing
 describe('Admin Login and Dashboard', () => {
   before(() => {
     cy.intercept('GET', 'http://localhost:8080/api/users', {
