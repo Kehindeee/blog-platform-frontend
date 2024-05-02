@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+//disabled eslint for no-undef as it is a global variable in cypress
 // End to End Testing with Cypress
 describe('The Home Page', () => {
   it('successfully loads', () => {
