@@ -1,3 +1,5 @@
+// This file contains the API functions for interacting with the backend server.
+// The functions use the Axios library to make HTTP requests to the server.
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
