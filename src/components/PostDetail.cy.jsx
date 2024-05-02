@@ -5,6 +5,7 @@ import PostDetail from './PostDetail';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 
 import '../../src/index.css';
+// Test the PostDetail component
 
 describe('PostDetail', () => {
   const mockPostId = '1';
