@@ -32,7 +32,7 @@ describe('NavBar Component', () => {
     fireEvent.click(menuButton);
     expect(screen.getByText(/home/i)).toBeVisible(); // Checks if menu is now open
     fireEvent.click(menuButton);
-    // Add your assertion to check if the menu is closed
+    
   });
 
   it('should show login when no user is authenticated', () => {
