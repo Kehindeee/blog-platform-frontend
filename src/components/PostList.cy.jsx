@@ -1,3 +1,4 @@
+// Cypress test for the PostList component
 /* eslint-disable no-undef */
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
@@ -6,6 +7,7 @@ import PostList from './PostList';
 import NavBar from './NavBar';
 import '../../src/index.css';
 
+// Test the PostList component
 describe('<PostList />', () => {
   it('renders the posts with formatted dates', () => {
     const mockPosts = [
