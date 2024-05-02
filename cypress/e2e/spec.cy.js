@@ -5,7 +5,7 @@ describe('The Home Page', () => {
     cy.visit('http://localhost:3000');
   });
 });
-
+// Fetching Posts Testing
 describe('Fetching Posts', () => {
   beforeEach(() => {
     // Intercept the GET request to the API for recent posts
