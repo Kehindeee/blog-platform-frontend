@@ -5,6 +5,7 @@ describe('The Home Page', () => {
     cy.visit('http://localhost:3000');
   });
 });
+
 // Fetching Posts Testing
 describe('Fetching Posts', () => {
   beforeEach(() => {
