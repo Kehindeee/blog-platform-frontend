@@ -1,3 +1,5 @@
+// Cypress test for the CreatePost component
+
 /* eslint-disable no-undef */
 import React from 'react';
 import { mount } from 'cypress/react18';
