@@ -12,8 +12,10 @@ const CommentsSection = ({ postId }) => {
   const [editText, setEditText] = useState('');
   const [newCommentText, setNewCommentText] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  // Get the user object from the AuthContext
   const { user } = useAuth();
 
+// Implement the logic to fetch comments for a post
   useEffect(() => {
     const loadComments = async () => {
       try {
