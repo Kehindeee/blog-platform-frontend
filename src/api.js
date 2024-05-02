@@ -92,7 +92,7 @@ export const addComment = async (postId, commentData) => {
 };
 
 export const getPosts = async () => {
-  // Implement the logic to fetch posts from your API server
+  // Implement the logic to fetch posts from the  API server
 
   const response = await fetch('http://localhost:8080/api/posts');
   if (!response.ok) {
@@ -109,8 +109,7 @@ export const login = async (email, password) => {
       }, {
           withCredentials: true  
       });
-      // Assuming your backend sends back a token or user data
-      return response.data; // This will contain the token or user data
+      return response.data; 
   } catch (error) {
       console.error('Login error:', error.response ? error.response.data : error);
       throw error;
