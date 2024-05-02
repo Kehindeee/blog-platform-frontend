@@ -1,6 +1,6 @@
 # Getting Started with the project
 
-This blog plaetform project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This blog platform project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## clone or fork the project to your local PC
 
