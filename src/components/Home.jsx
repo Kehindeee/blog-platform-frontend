@@ -68,9 +68,9 @@ const Home = () => {
 // Render the Home component
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-4xl font-bold text-center my-8">Welcome to My Blog Platform</h1>
+      <h2 className="text-4xl font-bold text-center my-8">Welcome to My Blog Platform</h2>
       <p className="text-lg text-center mb-10">
-        Discover insightful articles, engage in discussions, and connect with writers.
+        Discover insightful articles
       </p>
 
       {/* Search Section */}
